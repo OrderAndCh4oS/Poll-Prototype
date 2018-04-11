@@ -1,0 +1,11 @@
+# Dependency directories
+
+/.idea
+
+/node_modules
+
+/dist
+
+/vendor
+
+yarn-error.log
