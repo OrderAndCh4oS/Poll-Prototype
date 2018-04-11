@@ -4,8 +4,8 @@ const addPoll = (state, action) => {
     const poll = {
         id: state.length + 1,
         question: action.question,
-        votes: {yes: 0, not_sure: 0, no: 0},
-        user: state.user,
+        votes: {yes: 0, notSure: 0, no: 0},
+        userId: state.user,
         createdAt: action.createdAt
     };
     return [...state, poll];

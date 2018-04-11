@@ -7,11 +7,7 @@ const initialState = {
     users: [
         {
             id: 0,
-            name: 'Tiny Tim',
-        },
-        {
-            id: 1,
-            name: 'Scrooge',
+            name: 'Default User',
         }
     ]
 };
