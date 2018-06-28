@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import App from './components/app';
 
-import {createStore} from 'redux';
-import pollApp from './reducers/poll-app';
+import Root from './components/root';
+import configureStore from './configureStore';
 
-const store = createStore(pollApp);
+const store = configureStore();
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>,
+    <Root store={store}/>,
     document.getElementById('root')
 );

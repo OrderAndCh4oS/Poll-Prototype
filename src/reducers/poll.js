@@ -11,6 +11,21 @@ const addPoll = (state, action) => {
     return [...state, poll];
 };
 
+const populatePolls = (state, action) => {
+    const polls = action.polls.map((poll) => {
+        return {
+            uid: poll.id,
+            id: state.length + 1,
+            question: poll.question_text,
+            votes: poll.vote_count,
+            userId: poll.owner,
+            createdAt: poll.asked_at
+        };
+    });
+
+    return [...state, ...polls];
+};
+
 const vote = (state, action) => {
     return state.map((poll) => {
         if (action.pollId !== poll.id) {
@@ -51,4 +66,4 @@ const vote = (state, action) => {
     });
 };
 
-export {addPoll, vote};
+export {addPoll, vote, populatePolls};

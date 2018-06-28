@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {addPoll} from '../actions/poll';
+import {addPoll} from '../actions/index';
 
 let AddPoll = ({dispatch}) => {
     let input;
