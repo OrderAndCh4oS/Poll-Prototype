@@ -38,7 +38,6 @@ const createList = (category) => {
         default:
             return state;
         }
-
     };
     return combineReducers({ids, isFetching, errorMessage});
 };
