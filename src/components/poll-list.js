@@ -4,7 +4,7 @@ import Poll from './poll';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
 import {withRouter} from 'react-router-dom';
-import {getErrorMessage, getIsFetching, getPolls} from '../reducers';
+import * as polls from '../reducers/polls';
 import FetchError from './fetch-error';
 
 class PollList extends Component {
@@ -19,7 +19,8 @@ class PollList extends Component {
     }
 
     fetchData() {
-        const {category, fetchPolls} = this.props;
+        const {category, fetchPolls, fetchToken} = this.props;
+        fetchToken('sarcoma', 'C3ssp1t2');
         fetchPolls(category).then(() => console.log('done!'));
     }
 
@@ -47,9 +48,9 @@ class PollList extends Component {
 const mapStateToPollListProps = (state, {match}) => {
     const category = match.params.category || 'all';
     return {
-        polls: getPolls(state, category),
-        isFetching: getIsFetching(state, category),
-        errorMessage: getErrorMessage(state, category),
+        polls: polls.getPolls(state.polls, category),
+        isFetching: polls.getIsFetching(state.polls, category),
+        errorMessage: polls.getErrorMessage(state.polls, category),
         category
     };
 };
