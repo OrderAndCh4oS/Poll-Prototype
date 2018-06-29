@@ -20,7 +20,6 @@ class PollList extends Component {
 
     fetchData() {
         const {category, fetchPolls, fetchToken} = this.props;
-        fetchToken('sarcoma', 'C3ssp1t2');
         fetchPolls(category).then(() => console.log('done!'));
     }
 
