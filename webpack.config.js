@@ -23,14 +23,18 @@ module.exports = {
         filename: '[name].[hash].js',
         path: path.resolve(__dirname, 'dist')
     },
-
+    devServer: {
+        port: 8080,
+        contentBase: path.resolve(__dirname),
+        historyApiFallback: true
+    },
     module: {
         rules: [
             {
-                enforce: "pre",
+                enforce: 'pre',
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: "eslint-loader",
+                loader: 'eslint-loader'
             },
             {
                 test: /\.js$/,
@@ -48,7 +52,7 @@ module.exports = {
                         loader: 'css-loader'
                     },
                     {
-                        loader: 'sass-loader',
+                        loader: 'sass-loader'
                     }
                 ]
             }

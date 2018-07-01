@@ -9,7 +9,7 @@ import locationHelperBuilder from 'redux-auth-wrapper/history4/locationHelper';
 
 const userIsAuthenticated = connectedRouterRedirect({
     // The url to redirect user to if they fail
-    redirectPath: '/',
+    redirectPath: '/login',
     // If selector is true, wrapper will not redirect
     // For example let's check that state contains user data
     authenticatedSelector: state => state.auth.token !== null,
@@ -21,7 +21,7 @@ const locationHelper = locationHelperBuilder({});
 
 const userIsNotAuthenticated = connectedRouterRedirect({
     // This sends the user either to the query param route if we have one, or to the landing page if none is specified and the user is already logged in
-    redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/polls',
+    redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/',
     // This prevents us from adding the query parameter when we send the user away from the login page
     allowRedirectBack: false,
     // If selector is true, wrapper will not redirect
@@ -35,8 +35,8 @@ const Root = ({store}) => (
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
-                <Route path="/" component={userIsNotAuthenticated(LoginForm)}/>
-                <Route path="/polls/:category?" component={userIsAuthenticated(App)}/>
+                <Route path="/login" component={userIsNotAuthenticated(LoginForm)}/>
+                <Route path="/:category?" component={userIsAuthenticated(App)}/>
             </Switch>
         </BrowserRouter>
     </Provider>
