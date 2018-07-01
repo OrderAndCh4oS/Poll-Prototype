@@ -1,5 +1,5 @@
 {
-  "presets": ["env", "react"],
+  "presets": ["env", "stage-2", "react"],
   "plugins": [
     "relay",
     "transform-object-rest-spread"

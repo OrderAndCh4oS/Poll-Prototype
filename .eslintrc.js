@@ -3,11 +3,13 @@ module.exports = {
         "browser": true,
         "es6": true
     },
+    "parser": "babel-eslint",
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
-            "jsx": true
+            "jsx": true,
+            "ecmaVersion": 6
         },
         "sourceType": "module"
     },
@@ -15,9 +17,11 @@ module.exports = {
         "react"
     ],
     "rules": {
+        "no-class-assign": 2,
         "indent": [
             "error",
-            4
+            4,
+            {"SwitchCase": 1}
         ],
         "linebreak-style": [
             "error",

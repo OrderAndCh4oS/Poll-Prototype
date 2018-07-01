@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import {combineReducers} from 'redux';
 import polls from './polls';
 import auth from './auth';

@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 const baseURL = 'http://localhost:8000';
 export const fetchToken = (username, password) => {
     return fetch(baseURL + '/api-token-auth/', {

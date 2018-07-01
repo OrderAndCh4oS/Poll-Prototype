@@ -37,11 +37,33 @@ const fetchToken = (username, password) => (dispatch) => {
         password
     });
     return api.fetchToken(username, password).then((response) => response.json()).then(
-        data => dispatch({
-            type: types.FETCH_TOKEN_SUCCESS,
-            token: data.token
-        }),
+        data => {
+            console.log('data', data);
+            switch (true) {
+                case data.hasOwnProperty('token'):
+                    console.log('token');
+                    dispatch({
+                        type: types.FETCH_TOKEN_SUCCESS,
+                        token: data.token
+                    });
+                    break;
+                case data.hasOwnProperty('non_field_errors'):
+                    console.log('non_field');
+                    dispatch({
+                        type: types.FETCH_TOKEN_NON_FIELD_ERRORS,
+                        errors: data.non_field_errors
+                    });
+                    break;
+                case (data.hasOwnProperty('username') || data.hasOwnProperty('password')):
+                    console.log('field');
+                    dispatch({
+                        type: types.FETCH_TOKEN_FIELD_ERRORS,
+                        errors: {username: data.username || '', password: data.password || ''}
+                    });
+            }
+        },
         error => {
+            console.log('here');
             dispatch({
                 type: types.FETCH_TOKEN_FAILURE,
                 message: error.message || 'Something went wrong'
