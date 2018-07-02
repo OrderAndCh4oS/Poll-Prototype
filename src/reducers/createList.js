@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import * as types from '../actions/types';
+import * as request from './requests';
 
 const createList = (category) => {
     const ids = (state = [], action) => {
@@ -14,34 +15,11 @@ const createList = (category) => {
                 return state;
         }
     };
-    const isFetching = (state = false, action) => {
-        if (action.category !== category) {
-            return state;
-        }
-        switch (action.type) {
-            case types.FETCH_POLLS_REQUEST:
-                return true;
-            case types.FETCH_POLLS_SUCCESS:
-            case types.FETCH_POLLS_FAILURE:
-                return false;
-            default:
-                return state;
-        }
+    const requestCheck = action => {
+        return action.category !== category;
     };
-    const errorMessage = (state = null, action) => {
-        if (category !== action.category) {
-            return state;
-        }
-        switch (action.type) {
-            case types.FETCH_POLLS_FAILURE:
-                return action.message;
-            case types.FETCH_POLLS_REQUEST:
-            case types.FETCH_POLLS_SUCCESS:
-                return null;
-            default:
-                return state;
-        }
-    };
+    const isFetching = request.isFetching(requestCheck);
+    const errorMessage = request.errorMessage(requestCheck);
     return combineReducers({ids, isFetching, errorMessage});
 };
 

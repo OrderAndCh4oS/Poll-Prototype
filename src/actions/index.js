@@ -13,7 +13,7 @@ const fetchPolls = (category) => (dispatch, getState) => {
         type: types.FETCH_POLLS_REQUEST,
         category
     });
-    return api.fetchPolls(category).then((response) => response.json()).then(
+    return api.fetchPolls(category, getState().auth.token).then((response) => response.json()).then(
         data => dispatch({
             type: types.FETCH_POLLS_SUCCESS,
             category,
@@ -86,8 +86,8 @@ const addPoll = (questionText, category) => (dispatch, getState) => {
     });
 };
 
-const vote = (pollId, vote) => (dispatch) => {
-    return api.postVote(pollId, vote).then((response) => response.json()).then(data => {
+const vote = (pollId, vote) => (dispatch, getState) => {
+    return api.postVote(pollId, vote, getState().auth.token).then((response) => response.json()).then(data => {
         console.log(data);
         return dispatch({
             type: types.VOTE,

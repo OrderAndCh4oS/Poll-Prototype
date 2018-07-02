@@ -26,3 +26,4 @@ class CategorySelect extends Component {
 }
 
 export default CategorySelect;
+

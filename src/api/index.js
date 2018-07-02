@@ -9,10 +9,14 @@ export const fetchToken = (username, password) => {
         body: JSON.stringify({username: username, password: password})
     });
 };
-export const fetchPolls = (category) => {
+export const fetchPolls = (category, token) => {
     console.log(category);
     const endpoint = category === 'all' ? '/' : '?category=' + category;
-    return fetch(baseURL + '/questions' + endpoint);
+    return fetch(baseURL + '/questions' + endpoint, {
+        headers: {
+            'Authorization': 'JWT ' + token
+        }
+    });
 };
 
 export const postPoll = (questionText, category, token) => {
@@ -27,9 +31,14 @@ export const postPoll = (questionText, category, token) => {
     });
 };
 
-export const postVote = (pollId, vote) => {
+export const postVote = (pollId, vote, token) => {
     return fetch(baseURL + '/vote', {
         method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + token
+        },
         body: JSON.stringify({id: pollId, vote})
     });
 };
