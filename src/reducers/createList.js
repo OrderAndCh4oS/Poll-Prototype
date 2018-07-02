@@ -1,12 +1,15 @@
 import {combineReducers} from 'redux';
+import * as types from '../actions/types';
 
 const createList = (category) => {
     const ids = (state = [], action) => {
         switch (action.type) {
-            case 'FETCH_POLLS_SUCCESS':
+            case types.FETCH_POLLS_SUCCESS:
                 return action.category === category ?
                     action.response.result :
                     state;
+            case types.ADD_POLL_SUCCESS:
+                return [action.response.result, ...state];
             default:
                 return state;
         }
@@ -16,10 +19,10 @@ const createList = (category) => {
             return state;
         }
         switch (action.type) {
-            case 'FETCH_POLLS_REQUEST':
+            case types.FETCH_POLLS_REQUEST:
                 return true;
-            case 'FETCH_POLLS_SUCCESS':
-            case 'FETCH_POLLS_FAILURE':
+            case types.FETCH_POLLS_SUCCESS:
+            case types.FETCH_POLLS_FAILURE:
                 return false;
             default:
                 return state;
@@ -30,10 +33,10 @@ const createList = (category) => {
             return state;
         }
         switch (action.type) {
-            case 'FETCH_POLLS_FAILURE':
+            case types.FETCH_POLLS_FAILURE:
                 return action.message;
-            case 'FETCH_POLLS_REQUEST':
-            case 'FETCH_POLLS_SUCCESS':
+            case types.FETCH_POLLS_REQUEST:
+            case types.FETCH_POLLS_SUCCESS:
                 return null;
             default:
                 return state;

@@ -1,4 +1,5 @@
 export const ADD_POLL = 'ADD_POLL';
+export const ADD_POLL_SUCCESS = 'ADD_POLL_SUCCESS';
 export const VOTE = 'VOTE';
 export const FETCH_POLLS_REQUEST = 'FETCH_POLLS_REQUEST';
 export const FETCH_POLLS_SUCCESS = 'FETCH_POLLS_SUCCESS';

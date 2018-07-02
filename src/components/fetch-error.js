@@ -3,7 +3,7 @@ import React from 'react';
 
 const FetchError = ({message, onRetry}) => (
     <div>
-        <p>Failed to request todos: {message}</p>
+        <p>Request failed: {message}</p>
         <button onClick={onRetry}>Try again</button>
     </div>
 );

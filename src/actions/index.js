@@ -2,10 +2,11 @@ import {normalize} from 'normalizr';
 import * as schema from './schema';
 import * as api from '../api';
 import * as types from './types';
-import {getIsFetching} from '../reducers/polls';
+import * as pollReducers from '../reducers/polls';
+import * as authReducers from '../reducers/auth';
 
 const fetchPolls = (category) => (dispatch, getState) => {
-    if (getIsFetching(getState().polls, category)) {
+    if (pollReducers.getIsFetching(getState().polls, category)) {
         return Promise.resolve();
     }
     dispatch({
@@ -27,10 +28,10 @@ const fetchPolls = (category) => (dispatch, getState) => {
         }
     );
 };
-const fetchToken = (username, password) => (dispatch) => {
-    // if (getIsFetching(getState())) {
-    //     return Promise.resolve();
-    // }
+const fetchToken = (username, password) => (dispatch, getState) => {
+    if (authReducers.getIsFetching(getState())) {
+        return Promise.resolve();
+    }
     dispatch({
         type: types.FETCH_TOKEN_REQUEST,
         username,
@@ -72,13 +73,15 @@ const fetchToken = (username, password) => (dispatch) => {
     );
 };
 
-const addPoll = (questionText, category) => (dispatch) => {
-    return api.postPoll(questionText, category).then((response) => response.json()).then(data => {
-        console.log(data);
+const addPoll = (questionText, category) => (dispatch, getState) => {
+    if(getState().auth.token === null) {
+        Promise.resolve();
+    }
+    return api.postPoll(questionText, category, getState().auth.token).then((response) => response.json()).then(data => {
         return dispatch({
-            type: types.ADD_POLL,
+            type: types.ADD_POLL_SUCCESS,
             category,
-            response: normalize(data.results, schema.poll)
+            response: normalize(data, schema.poll)
         });
     });
 };

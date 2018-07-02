@@ -15,10 +15,15 @@ export const fetchPolls = (category) => {
     return fetch(baseURL + '/questions' + endpoint);
 };
 
-export const postPoll = (questionText, category) => {
+export const postPoll = (questionText, category, token) => {
     return fetch(baseURL + '/questions/', {
         method: 'post',
-        body: JSON.stringify({questionText, category})
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + token
+        },
+        body: JSON.stringify({question_text: questionText, category: 'Politics'})
     });
 };
 
