@@ -28,6 +28,24 @@ const fetchPolls = (category) => (dispatch, getState) => {
         }
     );
 };
+
+const fetchPoll = (id) => (dispatch, getState) => {
+    dispatch({
+        type: types.FETCH_POLL_REQUEST,
+    });
+    return api.fetchPoll(id, getState().auth.token).then((response) => response.json()).then(
+        data => dispatch({
+            type: types.FETCH_POLL_SUCCESS,
+            response: normalize(data, schema.poll)
+        }),
+        error => {
+            dispatch({
+                type: types.FETCH_POLL_FAILURE,
+                message: error.message || 'Something went wrong'
+            });
+        }
+    );
+};
 const fetchToken = (username, password) => (dispatch, getState) => {
     if (authReducers.getIsFetching(getState())) {
         return Promise.resolve();
@@ -87,15 +105,14 @@ const addPoll = (questionText, category) => (dispatch, getState) => {
 };
 
 const vote = (pollId, vote) => (dispatch, getState) => {
-    return api.postVote(pollId, vote, getState().auth.token).then((response) => response.json()).then(data => {
-        console.log(data);
-        return dispatch({
-            type: types.VOTE,
+    return api.postVote(pollId, vote, getState().auth.token).then((response) => response.json()).then(() => {
+        dispatch({
+            type: types.VOTE_SUCCESS,
             pollId,
-            vote,
-            response: normalize(data.results, schema.poll)
+            vote
         });
+        return fetchPoll(pollId, getState().auth.token)(dispatch, getState);
     });
 };
 
-export {addPoll, vote, fetchPolls, fetchToken};
+export {addPoll, vote, fetchPolls, fetchPoll, fetchToken};

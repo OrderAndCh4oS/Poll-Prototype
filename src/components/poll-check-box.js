@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 const PollCheckBox = ({pollId, onClick}) =>
     <div className={'poll-check-boxes'}>
-        <button onClick={() => onClick(pollId, VOTE_TYPE.YES, new Date().toLocaleString())}>Yes</button>
-        <button onClick={() => onClick(pollId, VOTE_TYPE.NOT_SURE, new Date().toLocaleString())}>Not Sure</button>
-        <button onClick={() => onClick(pollId, VOTE_TYPE.NO, new Date().toLocaleString())}>No</button>
+        <button onClick={() => onClick(pollId, VOTE_TYPE.YES)}>Yes</button>
+        <button onClick={() => onClick(pollId, VOTE_TYPE.NOT_SURE)}>Not Sure</button>
+        <button onClick={() => onClick(pollId, VOTE_TYPE.NO)}>No</button>
     </div>
 ;
 

@@ -11,6 +11,7 @@ const createList = (category) => {
                     state;
             case types.ADD_POLL_SUCCESS:
                 return [action.response.result, ...state];
+            case types.FETCH_POLL_SUCCESS:
             default:
                 return state;
         }
