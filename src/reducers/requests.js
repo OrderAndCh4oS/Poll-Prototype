@@ -1,7 +1,7 @@
 import * as types from '../actions/types';
 
-const isFetching = (check = () => true) => (state = false, action) => {
-    if (check(action)) {
+const isFetching = (check) => (state = false, action) => {
+    if (typeof check === 'function' && check(action)) {
         return state;
     }
     switch (action.type) {
@@ -15,7 +15,7 @@ const isFetching = (check = () => true) => (state = false, action) => {
     }
 };
 const errorMessage = (check) => (state = null, action) => {
-    if (check(action)) {
+    if (typeof check === 'function' && check(action)) {
         return state;
     }
     switch (action.type) {
