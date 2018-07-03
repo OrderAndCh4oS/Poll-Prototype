@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import * as types from '../actions/types';
-import * as request from './requests';
+import request from './requests';
 
 const createList = (category) => {
     const ids = (state = [], action) => {
@@ -19,13 +19,17 @@ const createList = (category) => {
     const requestCheck = action => {
         return action.category !== category;
     };
-    const isFetching = request.isFetching(requestCheck);
-    const errorMessage = request.errorMessage(requestCheck);
-    return combineReducers({ids, isFetching, errorMessage});
+    const requestTypes = {
+        requestType: types.FETCH_POLLS_REQUEST,
+        successType: types.FETCH_POLLS_SUCCESS,
+        failureType: types.FETCH_POLLS_FAILURE
+    };
+    const pollsRequest = request(requestCheck, requestTypes);
+    return combineReducers({ids, pollsRequest});
 };
 
 export default createList;
 
 export const getIds = (state) => state.ids;
-export const getIsFetching = (state) => state.isFetching;
-export const getErrorMessage = (state) => state.errorMessage;
+export const getIsFetching = (state) => state.pollsRequest.isFetching;
+export const getFetchErrorMessage = (state) => state.pollsRequest.errorMessage;

@@ -43,6 +43,7 @@ const auth = () => {
                 return state;
         }
     };
+
     return combineReducers({token, failedLogin, isFetching, errorMessage});
 };
 

@@ -6,8 +6,7 @@ import moment from 'moment';
 let Poll = ({id, question_text, vote_count, asked_at, owner, onVoteClick}) =>
     <div className={'poll'}>
         <h2 className={'question title'}>{question_text}</h2>
-        <p className={'asked-by meta'}>Asked by {owner}</p>
-        <p className={'asked-at meta date'}>Asked on {moment(asked_at).fromNow()}</p>
+        <p className={'asked-by meta'}>Asked by {owner}, {moment(asked_at).fromNow()}</p>
         <p className={'text'}>Yes: {vote_count.yes}, Not Sure: {vote_count.not_sure}, No: {vote_count.no}</p>
         <PollCheckBox pollId={id} onClick={onVoteClick}/>
     </div>;

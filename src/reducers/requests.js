@@ -1,32 +1,53 @@
-import * as types from '../actions/types';
+import {combineReducers} from 'redux';
 
-const isFetching = (check) => (state = false, action) => {
-    if (typeof check === 'function' && check(action)) {
-        return state;
-    }
-    switch (action.type) {
-        case types.FETCH_POLLS_REQUEST:
-            return true;
-        case types.FETCH_POLLS_SUCCESS:
-        case types.FETCH_POLLS_FAILURE:
-            return false;
-        default:
+const request = (check, {request, success, failure, invalid = null}) => {
+    const isFetching = (state = false, action) => {
+        if (typeof check === 'function' && check(action)) {
             return state;
+        }
+        switch (action.type) {
+            case request:
+                return true;
+            case success:
+            case failure:
+            case invalid:
+                return false;
+            default:
+                return state;
+        }
+    };
+    const invalidRequest = (state = null, action) => {
+        switch (action.type) {
+            case invalid:
+                return action.data;
+            case request:
+            case success:
+            case failure:
+                return null;
+            default:
+                return state;
+        }
+    };
+    const errorMessage = (state = null, action) => {
+        if (typeof check === 'function' && check(action)) {
+            return state;
+        }
+        switch (action.type) {
+            case failure:
+                return action.message;
+            case request:
+            case success:
+            case invalid:
+                return null;
+            default:
+                return state;
+        }
+    };
+    if (invalid !== null) {
+        return combineReducers({isFetching, errorMessage, invalidRequest});
+    } else {
+        return combineReducers({isFetching, errorMessage});
     }
 };
-const errorMessage = (check) => (state = null, action) => {
-    if (typeof check === 'function' && check(action)) {
-        return state;
-    }
-    switch (action.type) {
-        case types.FETCH_POLLS_FAILURE:
-            return action.message;
-        case types.FETCH_POLLS_REQUEST:
-        case types.FETCH_POLLS_SUCCESS:
-            return null;
-        default:
-            return state;
-    }
-};
 
-export {isFetching, errorMessage};
+export default request;

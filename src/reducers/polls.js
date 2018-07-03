@@ -1,6 +1,16 @@
 import byId, * as fromById from './byId';
 import createList, * as fromList from './createList';
 import {combineReducers} from 'redux';
+import request from './requests';
+import * as types from '../actions/types';
+
+const requestTypes = {
+    request: types.ADD_POLL_REQUEST,
+    success: types.ADD_POLL_SUCCESS,
+    failure: types.ADD_POLL_FAILURE,
+    invalid: types.ADD_POLL_INVALID
+};
+const add = request(undefined, requestTypes);
 
 const listByCategory = combineReducers({
     all: createList('all'),
@@ -8,7 +18,7 @@ const listByCategory = combineReducers({
     news: createList('news')
 });
 
-const polls = combineReducers({byId, listByCategory});
+const polls = combineReducers({byId, listByCategory, add});
 
 export default polls;
 
@@ -21,6 +31,6 @@ export const getIsFetching = (state, category) => {
     return fromList.getIsFetching(state.listByCategory[category]);
 };
 
-export const getErrorMessage = (state, category) => {
-    return fromList.getErrorMessage(state.listByCategory[category]);
+export const getFetchErrorMessage = (state, category) => {
+    return fromList.getFetchErrorMessage(state.listByCategory[category]);
 };

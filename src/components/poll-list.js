@@ -49,7 +49,7 @@ const mapStateToPollListProps = (state, {match}) => {
     return {
         polls: polls.getPolls(state.polls, category),
         isFetching: polls.getIsFetching(state.polls, category),
-        errorMessage: polls.getErrorMessage(state.polls, category),
+        errorMessage: polls.getFetchErrorMessage(state.polls, category),
         category
     };
 };

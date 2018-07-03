@@ -31,7 +31,7 @@ const fetchPolls = (category) => (dispatch, getState) => {
 
 const fetchPoll = (id) => (dispatch, getState) => {
     dispatch({
-        type: types.FETCH_POLL_REQUEST,
+        type: types.FETCH_POLL_REQUEST
     });
     return api.fetchPoll(id, getState().auth.token).then((response) => response.json()).then(
         data => dispatch({
@@ -82,7 +82,6 @@ const fetchToken = (username, password) => (dispatch, getState) => {
             }
         },
         error => {
-            console.log('here');
             dispatch({
                 type: types.FETCH_TOKEN_FAILURE,
                 message: error.message || 'Something went wrong'
@@ -92,27 +91,53 @@ const fetchToken = (username, password) => (dispatch, getState) => {
 };
 
 const addPoll = (questionText, category) => (dispatch, getState) => {
-    if(getState().auth.token === null) {
+    if (getState().auth.token === null) {
         Promise.resolve();
     }
-    return api.postPoll(questionText, category, getState().auth.token).then((response) => response.json()).then(data => {
-        return dispatch({
-            type: types.ADD_POLL_SUCCESS,
-            category,
-            response: normalize(data, schema.poll)
-        });
+    dispatch({
+        type: types.ADD_POLL_REQUEST
+    });
+    return api.postPoll(questionText, category, getState().auth.token).then((response) => {
+        if (response.status === 201) {
+            response.json().then(data => {
+                return dispatch({
+                    type: types.ADD_POLL_SUCCESS,
+                    category,
+                    response: normalize(data, schema.poll)
+                });
+            });
+        } else if (response.status === 400) {
+            response.json().then(data => {
+                return dispatch({
+                    type: types.ADD_POLL_INVALID,
+                    data
+                });
+            });
+        }
     });
 };
 
 const vote = (pollId, vote) => (dispatch, getState) => {
-    return api.postVote(pollId, vote, getState().auth.token).then((response) => response.json()).then(() => {
-        dispatch({
-            type: types.VOTE_SUCCESS,
-            pollId,
-            vote
-        });
-        return fetchPoll(pollId, getState().auth.token)(dispatch, getState);
+    dispatch({
+        type: types.VOTE_REQUEST
     });
+    return api.postVote(pollId, vote, getState().auth.token).then((response) => response.json()).then(
+        data => {
+            dispatch({
+                type: types.VOTE_SUCCESS,
+                pollId,
+                vote,
+                data
+            });
+            return fetchPoll(pollId, getState().auth.token)(dispatch, getState);
+        },
+        error => {
+            dispatch({
+                type: types.VOTE_FAILURE,
+                message: error.message || 'Something went wrong'
+            });
+        }
+    );
 };
 
 export {addPoll, vote, fetchPolls, fetchPoll, fetchToken};
