@@ -4,7 +4,6 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
 import * as auth from '../reducers/auth';
-import FetchError from './fetch-error';
 
 class Login extends Component {
     constructor() {
@@ -45,20 +44,21 @@ class Login extends Component {
         fetchToken(this.state.username, this.state.password);
     };
 
-    render() {
+    messages = () => {
         const {isFetching, errorMessage, failedLogin} = this.props;
         if (isFetching) {
             return <p>Logging In...</p>;
         }
         if (failedLogin.errors) {
-            return <p>Oh No!</p>;
+            return <p>Invalid Credentials!</p>;
         }
         if (errorMessage) {
-            return <FetchError
-                message={errorMessage}
-                onRetry={() => this.fetchData()}
-            />;
+            return <p>There was as problem with the login request: {errorMessage}</p>;
         }
+    };
+
+    render() {
+
         return (
             <div>
                 <h1>Login</h1>
@@ -66,9 +66,11 @@ class Login extends Component {
                     <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}/>
                 </label>
                 <label>Password
-                    <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
+                    <input type="password" name="password" value={this.state.password}
+                           onChange={this.handleInputChange}/>
                 </label>
                 <input type="submit" value="Login" onClick={this.handleSubmit}/>
+                {this.messages()}
             </div>
         );
     }

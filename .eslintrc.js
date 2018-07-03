@@ -1,40 +1,44 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es6": true
+    'env': {
+        'browser': true,
+        'es6': true
     },
-    "parser": "babel-eslint",
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true,
-            "ecmaVersion": 6
+    'parser': 'babel-eslint',
+    'extends': ['eslint:recommended', 'plugin:react/recommended'],
+    'parserOptions': {
+        'ecmaFeatures': {
+            'experimentalObjectRestSpread': true,
+            'jsx': true,
+            'ecmaVersion': 6
         },
-        "sourceType": "module"
+        'sourceType': 'module'
     },
-    "plugins": [
-        "react"
+    'plugins': [
+        'react'
     ],
-    "rules": {
-        "no-class-assign": 2,
-        "indent": [
-            "error",
+    'rules': {
+        'no-class-assign': 2,
+        'indent': [
+            'error',
             4,
-            {"SwitchCase": 1}
+            {
+                'SwitchCase': 1,
+                'FunctionDeclaration': {'body': 1, 'parameters': 2},
+                'ignoredNodes': ['JSXAttribute', 'JSXSpreadAttribute']
+            }
         ],
-        "linebreak-style": [
-            "error",
-            "unix"
+        'linebreak-style': [
+            'error',
+            'unix'
         ],
-        "quotes": [
-            "error",
-            "single"
+        'quotes': [
+            'error',
+            'single'
         ],
-        "semi": [
-            "error",
-            "always"
+        'semi': [
+            'error',
+            'always'
         ],
-        "no-console": 0
+        'no-console': 0
     }
 };
