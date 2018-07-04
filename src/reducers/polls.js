@@ -5,8 +5,8 @@ import add, * as fromAdd from './add';
 
 const listByCategory = combineReducers({
     all: createList('all'),
-    politics: createList('politics'),
-    news: createList('news')
+    Politics: createList('Politics'),
+    News: createList('News')
 });
 
 const polls = combineReducers({byId, listByCategory, add});

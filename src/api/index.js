@@ -10,7 +10,7 @@ export const fetchToken = (username, password) => {
     });
 };
 export const fetchPolls = (category, token) => {
-    const endpoint = category === 'all' ? '/' : '?category=' + category;
+    const endpoint = category === 'all' ? '/' : '/?category__name=' + category;
     return fetch(baseURL + '/questions' + endpoint, {
         headers: {
             'Authorization': 'JWT ' + token
