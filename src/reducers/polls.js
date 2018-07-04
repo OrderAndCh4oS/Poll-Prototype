@@ -1,16 +1,7 @@
+import {combineReducers} from 'redux';
 import byId, * as fromById from './byId';
 import createList, * as fromList from './createList';
-import {combineReducers} from 'redux';
-import request from './requests';
-import * as types from '../actions/types';
-
-const requestTypes = {
-    request: types.ADD_POLL_REQUEST,
-    success: types.ADD_POLL_SUCCESS,
-    failure: types.ADD_POLL_FAILURE,
-    invalid: types.ADD_POLL_INVALID
-};
-const add = request(undefined, requestTypes);
+import add, * as fromAdd from './add';
 
 const listByCategory = combineReducers({
     all: createList('all'),
@@ -22,7 +13,7 @@ const polls = combineReducers({byId, listByCategory, add});
 
 export default polls;
 
-export const getPolls = (state, category) => {
+export const getByCategory = (state, category) => {
     const ids = fromList.getIds(state.listByCategory[category]);
     return ids.map(id => fromById.getPoll(state.byId, id));
 };
@@ -33,4 +24,16 @@ export const getIsFetching = (state, category) => {
 
 export const getFetchErrorMessage = (state, category) => {
     return fromList.getFetchErrorMessage(state.listByCategory[category]);
+};
+
+export const getIsAdding = (state) => {
+    return fromAdd.getIsAdding(state);
+};
+
+export const getAddInvalidData = (state) => {
+    return fromAdd.getAddInvalidData(state);
+};
+
+export const getAddErrorMessage = (state) => {
+    return fromAdd.getAddErrorMessage(state);
 };

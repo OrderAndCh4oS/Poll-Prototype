@@ -97,23 +97,29 @@ const addPoll = (questionText, category) => (dispatch, getState) => {
     dispatch({
         type: types.ADD_POLL_REQUEST
     });
-    return api.postPoll(questionText, category, getState().auth.token).then((response) => {
-        if (response.status === 201) {
-            response.json().then(data => {
-                return dispatch({
-                    type: types.ADD_POLL_SUCCESS,
-                    category,
-                    response: normalize(data, schema.poll)
+    return api.postPoll(questionText, category, getState().auth.token).then(
+        (response) => {
+            if (response.status === 201) {
+                response.json().then(data => {
+                    return dispatch({
+                        type: types.ADD_POLL_SUCCESS,
+                        category,
+                        response: normalize(data, schema.poll)
+                    });
                 });
-            });
-        } else if (response.status === 400) {
-            response.json().then(data => {
-                return dispatch({
-                    type: types.ADD_POLL_INVALID,
-                    data
+            } else if (response.status === 400) {
+                response.json().then(data => {
+                    return dispatch({
+                        type: types.ADD_POLL_INVALID,
+                        data
+                    });
                 });
-            });
-        }
+            }
+        }).catch((error) => {
+        return dispatch({
+            type: types.ADD_POLL_FAILURE,
+            message: error
+        });
     });
 };
 

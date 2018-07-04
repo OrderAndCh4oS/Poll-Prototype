@@ -47,7 +47,7 @@ class PollList extends Component {
 const mapStateToPollListProps = (state, {match}) => {
     const category = match.params.category || 'all';
     return {
-        polls: polls.getPolls(state.polls, category),
+        polls: polls.getByCategory(state.polls, category),
         isFetching: polls.getIsFetching(state.polls, category),
         errorMessage: polls.getFetchErrorMessage(state.polls, category),
         category
