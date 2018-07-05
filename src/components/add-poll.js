@@ -1,17 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import {connect} from 'react-redux';
-import CategorySelect from './category-select';
 import * as polls from '../reducers/polls';
 import * as actions from '../actions';
+import {withRouter} from 'react-router-dom';
 
-let AddPoll = ({isAdding, errorMessage, invalidData, addPoll}) => {
+let AddPoll = ({isAdding, errorMessage, invalidData, addPoll, category}) => {
     let input;
-    let category = '';
-
-    const handleCategoryChange = (event) => {
-        category = event.target.value;
-    };
 
     const messages = () => {
         switch (true) {
@@ -36,7 +31,6 @@ let AddPoll = ({isAdding, errorMessage, invalidData, addPoll}) => {
             <label>
                 Question: <input ref={node => input = node} style={questionStyles()}/>
             </label>
-            <CategorySelect onChange={handleCategoryChange}/>
             <button onClick={() => {
                 addPoll(input.value, category);
                 input.value = '';
@@ -47,15 +41,16 @@ let AddPoll = ({isAdding, errorMessage, invalidData, addPoll}) => {
     );
 };
 
-const mapStateToAddPollProps = (state) => {
+const mapStateToAddPollProps = (state, {match}) => {
     return {
         isAdding: polls.getIsAdding(state.polls),
         errorMessage: polls.getAddErrorMessage(state.polls),
-        invalidData: polls.getAddInvalidData(state.polls)
+        invalidData: polls.getAddInvalidData(state.polls),
+        category: match.params.category
     };
 };
 
-AddPoll = connect(mapStateToAddPollProps, actions)(AddPoll);
+AddPoll = withRouter(connect(mapStateToAddPollProps, actions)(AddPoll));
 
 export default AddPoll;
 

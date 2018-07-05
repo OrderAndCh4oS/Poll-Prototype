@@ -10,7 +10,11 @@ const createList = (category) => {
                     action.response.result :
                     state;
             case types.ADD_POLL_SUCCESS:
-                return [action.response.result, ...state];
+                if (category === action.category || category === 'all') {
+                    return [action.response.result, ...state];
+                } else {
+                    return state;
+                }
             case types.FETCH_POLL_SUCCESS:
             default:
                 return state;
