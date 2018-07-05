@@ -123,6 +123,13 @@ const addPoll = (questionText, category) => (dispatch, getState) => {
     });
 };
 
+const selectCategory = (category) => {
+    return {
+        type: types.SELECT_CATEGORY,
+        category
+    };
+};
+
 const vote = (pollId, vote) => (dispatch, getState) => {
     dispatch({
         type: types.VOTE_REQUEST
@@ -146,4 +153,4 @@ const vote = (pollId, vote) => (dispatch, getState) => {
     );
 };
 
-export {addPoll, vote, fetchPolls, fetchPoll, fetchToken};
+export {addPoll, vote, selectCategory, fetchPolls, fetchPoll, fetchToken};

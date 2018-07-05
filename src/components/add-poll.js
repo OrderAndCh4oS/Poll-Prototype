@@ -3,25 +3,27 @@ import React from 'react';
 import {connect} from 'react-redux';
 import * as polls from '../reducers/polls';
 import * as actions from '../actions';
-import {withRouter} from 'react-router-dom';
+import CategorySelect from './category-select';
 
-let AddPoll = ({isAdding, errorMessage, invalidData, addPoll, category}) => {
+let AddPoll = ({request, addPoll, getSelectedCategory, selectCategory}) => {
     let input;
 
     const messages = () => {
         switch (true) {
-            case isAdding:
+            case request.isAdding:
                 return <p>Adding poll...</p>;
-            case errorMessage !== null:
-                return <p>There was an error adding the poll: {errorMessage.message}</p>;
-            case invalidData !== null:
+            case request.errorMessage !== null:
+                return <p>There was an error adding the poll: {request.errorMessage.message}</p>;
+            case request.invalidData !== null:
                 return <p>Invalid data entered.</p>;
         }
     };
 
     const questionStyles = () => {
-        if (invalidData !== null && invalidData.hasOwnProperty('question_text')) {
-            return {'backgroundColor': '#ffd1d5'};
+        if (request.invalidData !== null) {
+            if (request.invalidData.hasOwnProperty('question_text')) {
+                return {'backgroundColor': '#ffd1d5'};
+            }
         }
     };
 
@@ -31,8 +33,9 @@ let AddPoll = ({isAdding, errorMessage, invalidData, addPoll, category}) => {
             <label>
                 Question: <input ref={node => input = node} style={questionStyles()}/>
             </label>
+            <CategorySelect handleChange={(event) => selectCategory(event.target.value)}/>
             <button onClick={() => {
-                addPoll(input.value, category);
+                addPoll(input.value, getSelectedCategory);
                 input.value = '';
             }}>Ask
             </button>
@@ -41,16 +44,18 @@ let AddPoll = ({isAdding, errorMessage, invalidData, addPoll, category}) => {
     );
 };
 
-const mapStateToAddPollProps = (state, {match}) => {
+const mapStateToAddPollProps = (state) => {
     return {
-        isAdding: polls.getIsAdding(state.polls),
-        errorMessage: polls.getAddErrorMessage(state.polls),
-        invalidData: polls.getAddInvalidData(state.polls),
-        category: match.params.category
+        request: {
+            isAdding: polls.getIsAdding(state.polls),
+            errorMessage: polls.getAddErrorMessage(state.polls),
+            invalidData: polls.getAddInvalidData(state.polls)
+        },
+        getSelectedCategory: polls.getSelectedCategory(state.polls)
     };
 };
 
-AddPoll = withRouter(connect(mapStateToAddPollProps, actions)(AddPoll));
+AddPoll = connect(mapStateToAddPollProps, actions)(AddPoll);
 
 export default AddPoll;
 

@@ -26,6 +26,10 @@ export const getFetchErrorMessage = (state, category) => {
     return fromList.getFetchErrorMessage(state.listByCategory[category]);
 };
 
+export const getSelectedCategory = (state) => {
+    return fromAdd.getSelectedCategory(state);
+};
+
 export const getIsAdding = (state) => {
     return fromAdd.getIsAdding(state);
 };
